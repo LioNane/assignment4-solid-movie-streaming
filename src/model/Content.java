@@ -3,7 +3,7 @@ package model;
 
 import exception.InvalidInputException;
 
-abstract class Content implements Validatable{
+abstract public class Content implements Playable, Searchable<Content>{
     private int id;
     private String name;
     private float rating;
@@ -14,35 +14,45 @@ abstract class Content implements Validatable{
         setRating(rating);
     }
 
-    protected int getId(){
+    public int getId(){
         return id;
     }
-    protected void setId(int id){
+    public void setId(int id){
         this.id = id;
     }
 
-    protected String getName(){
+    public String getName(){
         return name;
     }
-    protected void setName(String name){
+    public void setName(String name){
         this.name = name;
     }
 
-    protected float getRating(){ return rating;}
-    protected void setRating(float rating){this.rating = rating;}
+    public float getRating(){ return rating;}
+    public void setRating(float rating){this.rating = rating;}
 
     abstract protected int countDuration();
     abstract protected String getContentType();
     abstract protected void displayInfo();
 
-    protected boolean isHighlyRated(){
+    public boolean isHighlyRated(){
         return (rating >= 8.0);
     }
 
     @Override
-    public void validate() throws InvalidInputException {
-        if(id <= 0 || name.isEmpty() || rating < 0){
-            throw new InvalidInputException("Invalid input");
+    public boolean matches(String query){
+        String q = Searchable.normalize(query);
+        return Searchable.normalize(name).contains(q);
+    }
+    protected void validateBaseFields() throws InvalidInputException {
+        if (id <= 0) {
+            throw new InvalidInputException("id must be > 0");
+        }
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidInputException("name must not be empty");
+        }
+        if (rating < 0 || rating > 10) {
+            throw new InvalidInputException("rating must be between 0 and 10");
         }
     }
 }

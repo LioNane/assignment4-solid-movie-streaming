@@ -2,7 +2,7 @@ package model;
 
 import exception.InvalidInputException;
 
-public class Film extends Content implements Playable{
+public class Film extends Content implements Validatable<Film>{
     private int duration;
 
     public Film(int id, String name, int duration, float rating){
@@ -10,23 +10,7 @@ public class Film extends Content implements Playable{
         this.duration = duration;
     }
 
-    public int getId(){
-        return super.getId();
-    }
-    public void setId(int id){
-        super.setId(id);
-    }
 
-    public String getName(){
-        return super.getName();
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public float getRating(){ return super.getRating();}
-    public void setRating(float rating){super.setRating(rating);}
 
     @Override
     public int countDuration(){
@@ -47,7 +31,7 @@ public class Film extends Content implements Playable{
 
     @Override
     public void validate() throws InvalidInputException {
-        super.validate();
+        validateBaseFields();
         if (duration <= 0){
             throw new InvalidInputException("Invalid input");
         }
@@ -58,8 +42,5 @@ public class Film extends Content implements Playable{
         System.out.println("Play film: " + getName());
     }
 
-    public boolean isHighlyRated(){
-        return super.isHighlyRated();
-    }
 
 }

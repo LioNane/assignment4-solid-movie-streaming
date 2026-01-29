@@ -4,7 +4,7 @@ import exception.InvalidInputException;
 
 import java.util.ArrayList;
 
-public class Series extends Content implements Playable{
+public class Series extends Content implements Validatable<Series>{
     private ArrayList<Episode> episodes;
 
     public Series(int id, String name, float rating){
@@ -17,20 +17,7 @@ public class Series extends Content implements Playable{
         this.episodes = episodes;
     }
 
-    public int getId(){
-        return super.getId();
-    }
-    public void setId(int id){
-        super.setId(id);
-    }
 
-    public String getName(){
-        return super.getName();
-    }
-
-
-    public float getRating(){ return super.getRating();}
-    public void setRating(float rating){super.setRating(rating);}
 
     public void addEpisode(Episode episode) {
         episodes.add(episode);
@@ -60,7 +47,7 @@ public class Series extends Content implements Playable{
 
     @Override
     public void validate() throws InvalidInputException {
-        super.validate();
+        validateBaseFields();
     }
 
     @Override
@@ -70,10 +57,6 @@ public class Series extends Content implements Playable{
         } else {
             System.out.println("Play first episode: " + episodes.getFirst().getName());
         }
-    }
-
-    public boolean isHighlyRated(){
-        return super.isHighlyRated();
     }
 
 }
