@@ -33,7 +33,7 @@ abstract public class Content implements Playable, Searchable<Content>{
 
     abstract protected int countDuration();
     abstract protected String getContentType();
-    abstract protected void displayInfo();
+    abstract public void displayInfo();
 
     public boolean isHighlyRated(){
         return (rating >= 8.0);

@@ -4,42 +4,54 @@ import exception.DuplicateResourceException;
 import model.Film;
 import repository.FilmRepository;
 import repository.interfaces.FilmRepositoryI;
+import service.interfaces.FilmServiceI;
+import utils.SortingUtils;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
-public class FilmService {
-    private final FilmRepositoryI filmRepositoryI;
+public class FilmService implements FilmServiceI {
+    private final FilmRepositoryI filmRepository;
 
-    public FilmService(FilmRepositoryI filmRepositoryI){
-        this.filmRepositoryI = filmRepositoryI;
+    public FilmService(FilmRepositoryI filmRepository){
+        this.filmRepository = filmRepository;
     }
 
-    public Film createFilm(Film film) throws SQLException {
+    @Override
+    public Film create(Film film) {
         film.validate();
-        if(filmRepositoryI.existsByName(film.getName())){
+        if(filmRepository.existsByName(film.getName())){
             throw new DuplicateResourceException("Film with the name:" + film.getName() + " already exists");
         }
-        return filmRepositoryI.create(film);
+        return filmRepository.create(film);
     }
 
-    public ArrayList<Film> getAllFilms(){
-        return (ArrayList<Film>) filmRepositoryI.getAll();
+    @Override
+    public List<Film> getAll(){
+        return (List<Film>) filmRepository.getAll();
     }
 
-    public Film getFilmById(int id){
-        return filmRepositoryI.getById(id);
+    @Override
+    public Film getById(int id){
+        return filmRepository.getById(id);
     }
 
-    public Film updateFilm(int id, Film film) throws SQLException {
+    @Override
+    public Film update(int id, Film film) {
         film.validate();
-        return filmRepositoryI.update(id, film);
+        return filmRepository.update(id, film);
     }
 
-    public void deleteFilm(int id){
-        filmRepositoryI.delete(id);
+    @Override
+    public void delete(int id){
+        filmRepository.delete(id);
     }
 
-
+    public void sortByRating(){
+        SortingUtils.sort(
+                getAll(),
+                (f1, f2) -> Float.compare(f2.getRating(), f1.getRating())
+        );
+    }
 }

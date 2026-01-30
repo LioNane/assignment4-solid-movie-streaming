@@ -9,13 +9,13 @@ public class ReflectionUtils {
             Class<?> clas = obj.getClass();
             System.out.println("Class: " + clas.getName());
             System.out.println();
-            Field[] fields = clas.getFields();
+            Field[] fields = clas.getDeclaredFields();
             System.out.println("Fields: ");
             for(Field field: fields){
                 System.out.println(field.getName());
             }
             System.out.println();
-            Method[] methods = clas.getMethods();
+            Method[] methods = clas.getDeclaredMethods();
             for(Method method: methods){
                 System.out.println(method.getName());
             }

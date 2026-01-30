@@ -1,42 +1,58 @@
 package service;
 
 import exception.DuplicateResourceException;
+import model.Film;
 import model.Series;
 import repository.SeriesRepository;
 import repository.interfaces.SeriesRepositoryI;
+import service.interfaces.SeriesServiceI;
+import utils.SortingUtils;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SeriesService {
-    private final SeriesRepositoryI seriesRepositoryI;
+public class SeriesService implements SeriesServiceI {
+    private final SeriesRepositoryI seriesRepository;
 
-    public SeriesService(SeriesRepositoryI seriesRepositoryI){
-        this.seriesRepositoryI = seriesRepositoryI;
+    public SeriesService(SeriesRepositoryI seriesRepository){
+        this.seriesRepository = seriesRepository;
     }
 
-    public Series createSeries(Series series){
+    @Override
+    public Series create(Series series){
         series.validate();
-        if(seriesRepositoryI.existsByName(series.getName())){
+        if(seriesRepository.existsByName(series.getName())){
             throw new DuplicateResourceException("Series with the name: " + series.getName() + " already exists");
         }
-        return seriesRepositoryI.create(series);
+        return seriesRepository.create(series);
     }
 
-    public ArrayList<Series> getAllSeries(){
-        return (ArrayList<Series>) seriesRepositoryI.getAll();
+    @Override
+    public List<Series> getAll(){
+        return (List<Series>) seriesRepository.getAll();
     }
 
-    public Series getSeriesById(int id){
-        return seriesRepositoryI.getById(id);
+    @Override
+    public Series getById(int id){
+        return seriesRepository.getById(id);
     }
 
-    public Series updateSeries(int id, Series series){
+    @Override
+    public Series update(int id, Series series){
         series.validate();
-        return seriesRepositoryI.update(id, series);
+        return seriesRepository.update(id, series);
     }
 
-    public void deleteSeries(int id){
-        seriesRepositoryI.delete(id);
+    @Override
+    public void delete(int id){
+        seriesRepository.delete(id);
+    }
+
+    public void sortByRating(){
+        SortingUtils.sort(
+                getAll(),
+                (s1, s2) -> Float.compare(s2.getRating(), s1.getRating())
+        );
     }
 }
