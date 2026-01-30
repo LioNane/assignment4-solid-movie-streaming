@@ -48,11 +48,4 @@ public class SeriesService implements SeriesServiceI {
     public void delete(int id){
         seriesRepository.delete(id);
     }
-
-    public void sortByRating(){
-        SortingUtils.sort(
-                getAll(),
-                (s1, s2) -> Float.compare(s2.getRating(), s1.getRating())
-        );
-    }
 }

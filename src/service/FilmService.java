@@ -47,11 +47,4 @@ public class FilmService implements FilmServiceI {
     public void delete(int id){
         filmRepository.delete(id);
     }
-
-    public void sortByRating(){
-        SortingUtils.sort(
-                getAll(),
-                (f1, f2) -> Float.compare(f2.getRating(), f1.getRating())
-        );
-    }
 }

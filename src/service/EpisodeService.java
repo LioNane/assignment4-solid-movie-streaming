@@ -56,11 +56,4 @@ public class EpisodeService implements EpisodeServiceI {
     public void delete(int id){
         episodeRepository.delete(id);
     }
-
-    public void sortByDuration(){
-        SortingUtils.sort(
-                getAll(),
-                (e1, e2) -> Float.compare(e2.getDuration(), e1.getDuration())
-        );
-    }
 }

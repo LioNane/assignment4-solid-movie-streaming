@@ -15,10 +15,12 @@ public class ReflectionUtils {
                 System.out.println(field.getName());
             }
             System.out.println();
+            System.out.println("Methods");
             Method[] methods = clas.getDeclaredMethods();
             for(Method method: methods){
                 System.out.println(method.getName());
             }
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
