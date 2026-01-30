@@ -4,6 +4,7 @@ import exception.DatabaseOperationException;
 import exception.ResourceNotFoundException;
 import model.Episode;
 import utils.DatabaseConnection;
+import repository.interfaces.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EpisodeRepository {
+public class EpisodeRepository implements EpisodeRepositoryI {
 
     public Episode create(Episode episode) {
 

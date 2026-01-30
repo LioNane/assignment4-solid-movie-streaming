@@ -3,40 +3,42 @@ package service;
 import exception.DuplicateResourceException;
 import model.Film;
 import repository.FilmRepository;
+import repository.interfaces.FilmRepositoryI;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FilmService {
-    private final FilmRepository filmRepository;
+    private final FilmRepositoryI filmRepositoryI;
 
-    public FilmService(FilmRepository filmRepository){
-        this.filmRepository = filmRepository;
+    public FilmService(FilmRepositoryI filmRepositoryI){
+        this.filmRepositoryI = filmRepositoryI;
     }
 
     public Film createFilm(Film film) throws SQLException {
         film.validate();
-        if(filmRepository.existsByName(film.getName())){
+        if(filmRepositoryI.existsByName(film.getName())){
             throw new DuplicateResourceException("Film with the name:" + film.getName() + " already exists");
         }
-        return filmRepository.create(film);
+        return filmRepositoryI.create(film);
     }
 
     public ArrayList<Film> getAllFilms(){
-        return filmRepository.getAll();
+        return (ArrayList<Film>) filmRepositoryI.getAll();
     }
 
     public Film getFilmById(int id){
-        return filmRepository.getById(id);
+        return filmRepositoryI.getById(id);
     }
 
     public Film updateFilm(int id, Film film) throws SQLException {
         film.validate();
-        return filmRepository.update(id, film);
+        return filmRepositoryI.update(id, film);
     }
 
     public void deleteFilm(int id){
-        filmRepository.delete(id);
+        filmRepositoryI.delete(id);
     }
 
 

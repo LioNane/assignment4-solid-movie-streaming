@@ -4,6 +4,7 @@ import exception.DatabaseOperationException;
 import exception.ResourceNotFoundException;
 import model.Film;
 import utils.DatabaseConnection;
+import repository.interfaces.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,16 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class FilmRepository {
+public class FilmRepository implements FilmRepositoryI {
 
-    public Film create(Film film) throws SQLException {
+    public Film create(Film film) {
         try (
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("INSERT INTO films VALUES (?,?,?,?)");
         ){
             ps.setInt(1, film.getId());
             ps.setString(2, film.getName());
-            ps.setInt(3, film.getDuration());
+            ps.setInt(3, film.countDuration());
             ps.setFloat(4, film.getRating());
 
             int affectedRows = ps.executeUpdate();
@@ -119,7 +120,7 @@ public class FilmRepository {
             throw new DatabaseOperationException("DB error while deleting film: " + e.getMessage());
         }
     }
-    public boolean existsByName(String name) throws SQLException {
+    public boolean existsByName(String name) {
         try (
                 Connection con = DatabaseConnection.getConnection();
                 PreparedStatement ps = con.prepareStatement("SELECT 1 FROM films WHERE name = ?");

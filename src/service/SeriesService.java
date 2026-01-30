@@ -3,38 +3,40 @@ package service;
 import exception.DuplicateResourceException;
 import model.Series;
 import repository.SeriesRepository;
+import repository.interfaces.SeriesRepositoryI;
+
 
 import java.util.ArrayList;
 
 public class SeriesService {
-    private final SeriesRepository seriesRepository;
+    private final SeriesRepositoryI seriesRepositoryI;
 
-    public SeriesService(SeriesRepository seriesRepository){
-        this.seriesRepository = seriesRepository;
+    public SeriesService(SeriesRepositoryI seriesRepositoryI){
+        this.seriesRepositoryI = seriesRepositoryI;
     }
 
     public Series createSeries(Series series){
         series.validate();
-        if(seriesRepository.existsByName(series.getName())){
+        if(seriesRepositoryI.existsByName(series.getName())){
             throw new DuplicateResourceException("Series with the name: " + series.getName() + " already exists");
         }
-        return seriesRepository.create(series);
+        return seriesRepositoryI.create(series);
     }
 
     public ArrayList<Series> getAllSeries(){
-        return seriesRepository.getAll();
+        return (ArrayList<Series>) seriesRepositoryI.getAll();
     }
 
     public Series getSeriesById(int id){
-        return seriesRepository.getById(id);
+        return seriesRepositoryI.getById(id);
     }
 
     public Series updateSeries(int id, Series series){
         series.validate();
-        return seriesRepository.update(id, series);
+        return seriesRepositoryI.update(id, series);
     }
 
     public void deleteSeries(int id){
-        seriesRepository.delete(id);
+        seriesRepositoryI.delete(id);
     }
 }
